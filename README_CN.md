@@ -55,3 +55,38 @@ _不需要配环境、不需要依赖库，从0开始学习智驾感知技术_
  
 > 这个项目不仅仅是代码的实现，更是一份详细的学习指南，让每一位参与者都能轻松掌握自动驾驶感知算法的核心逻辑。
 
+## 模型算法 ##
+- [x] DETR (https://arxiv.org/abs/2005.12872)
+- [x] DeformableDETR (https://arxiv.org/abs/2010.04159)
+- [x] DETR3D (https://arxiv.org/abs/2110.06922)
+- [x] BEVFormer (https://arxiv.org/abs/2203.17270)
+
+## 安装 ##
+- Paddle >= 2.6 (https://www.paddlepaddle.org.cn/)
+  - CPU环境： `pip install paddlepaddle==2.6.2`
+  - GPU环境： `pip install paddlepaddle-gpu==2.6.2`
+
+## 快速开始 ##
+1. 下载项目代码：
+   ```shell
+   git clone https://github.com/xperzy/paddle-auto-percept.git
+   cd paddle-auto-percept
+   cd detr
+   ```
+3. 下载模型权重文件：
+   - DETR: https://huggingface.co/xperzy/detr-r50-paddle
+   - DeformableDETR: https://huggingface.co/xperzy/deformable-detr-r50-paddle
+   - DETR3D: https://huggingface.co/xperzy/detr3d-r50-paddle
+   - BEVFormer: https://huggingface.co/xperzy/bevformer-r101-paddle
+
+5. 运行：
+   - 将模型权重复制到项目路径（或者修改main.py中的权重路径），然后运行脚本：
+       ```shell
+       python main.py
+       ```
+   - DETR3D和BEVFormer需要提前生成nuscenes数据：
+     - Nuscenes数据处理
+
+
+
+
