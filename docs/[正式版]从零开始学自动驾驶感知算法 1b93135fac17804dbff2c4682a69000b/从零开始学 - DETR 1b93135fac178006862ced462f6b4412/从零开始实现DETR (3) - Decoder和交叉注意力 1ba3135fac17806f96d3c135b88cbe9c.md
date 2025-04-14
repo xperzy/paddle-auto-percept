@@ -1,0 +1,227 @@
+# 从零开始实现DETR (3) - Decoder和交叉注意力
+
+![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(3)%20-%20Decoder%E5%92%8C%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17806f96d3c135b88cbe9c/image.png)
+
+## Multihead Attention：
+
+```python
+import paddle
+import paddle.nn as nn
+import paddle.nn.functional as F
+
+class DetrMultiHeadAttention(nn.Layer):
+    """Multi head attention for Detr self-attn and cross-attn"""
+    def __init__(self, embed_dim, num_heads, dropout_rate=0.0):
+        super().__init__()
+        self.embed_dim = embed_dim
+        self.num_heads = num_heads
+        self.head_dim = embed_dim // num_heads
+        self.scale = self.head_dim ** -0.5
+
+        self.q = nn.Linear(embed_dim, embed_dim)
+        self.k = nn.Linear(embed_dim, embed_dim)
+        self.v = nn.Linear(embed_dim, embed_dim)
+
+        self.out_proj = nn.Linear(embed_dim, embed_dim)
+        self.dropout = nn.Dropout(dropout_rate)
+        self.softmax = nn.Softmax(-1)
+
+    def reshape_to_multi_heads(self, x, seq_l, bs):
+        x = x.reshape([bs, seq_l, self.num_heads, self.head_dim])
+        x = x.transpose([0, 2, 1, 3])
+        x = x.reshape([bs * self.num_heads, seq_l, self.head_dim])
+        return x
+
+    def forward(self,
+                x,
+                attn_mask,
+                pos_embeds,
+                encoder_x=None,
+                encoder_pos_embeds=None):
+        x_q = x + pos_embeds if pos_embeds is not None else x
+
+        if encoder_x is None:  # self-attn
+            x_k = x_q
+            x_v = x
+        else:  # cross-attn
+            x_k = encoder_x + encoder_pos_embeds if encoder_pos_embeds is not None else encoder_x
+            x_v = encoder_x
+
+        bs, tgt_l, _ = x_q.shape
+        _, src_l, _ = x_v.shape
+
+        q = self.q(x_q) * self.scale
+        q = self.reshape_to_multi_heads(q, tgt_l, bs)  # [bs*num_heads, tgt_l, head_dim]
+        k = self.k(x_k)
+        k = self.reshape_to_multi_heads(k, src_l, bs)  # [bs*num_heads, src_l, head_dim]
+        v = self.v(x_v)
+        v = self.reshape_to_multi_heads(v, src_l, bs)  # [bs*num_heads, src_l, head_dim]
+
+        attn = paddle.matmul(q, k, transpose_y=True)  # [bs*numheads, tgt_l, src_l]
+        # attn mask: padded area is set to small number
+        if attn_mask is not None:
+            attn = attn.reshape([bs, self.num_heads, tgt_l, src_l])
+            attn = attn + attn_mask  # [bs, num_heads, tgt_l, src_l] + [bs, 1, tgt_l, src_l]
+            attn = attn.reshape([bs * self.num_heads, tgt_l, src_l])
+        attn = self.softmax(attn)
+        # return attn_reshaped, reshape back is to ensure attn keeps its gradient
+        attn_reshaped = attn.reshape([bs, self.num_heads, tgt_l, src_l])
+        attn = attn_reshaped.reshape([bs * self.num_heads, tgt_l, src_l])
+        attn = self.dropout(attn)
+
+        out = paddle.matmul(attn, v)
+        out = out.reshape([bs, self.num_heads, tgt_l, self.head_dim])
+        out = out.transpose([0, 2, 1, 3])
+        out = out.reshape([bs, tgt_l, self.num_heads * self.head_dim])
+        out = self.out_proj(out)
+        out = self.dropout(out)
+
+        return out, attn_reshaped
+```
+
+在计算Self-Attention和Cross-Attention的时候，都是使用上面的Multihead Attention模块，其主要区别是当有encoder的输出作为当前的输入时，x_k, x_v不再是和x_q一样来自于输入x，而是使用encoder_x(encoder的输出)作为x_k和x_v，其中x_k还需要加上encoder的位置编码。（计算Self-Attn还是Cross-Attn在实现的时候，可以根据encoder_x是否为None来转换）
+
+### Self-Attention计算的时候：
+
+![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(3)%20-%20Decoder%E5%92%8C%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17806f96d3c135b88cbe9c/image%201.png)
+
+- Self attention是计算object_query自己和自己的注意力，object_query是初始化为0的维度为[num_queries, embed_dim]的tensor，加上可学习的query_pos_embeds代表位置信息，作为decoder的输入。这个object_query可以理解为是目标（target），就是我们希望通过网络优化其中每一个元素，使得其包含有每个障碍物的位置和类别等信息，用于之后的分类和框回归。
+
+### Cross Attention计算的时候：
+
+![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(3)%20-%20Decoder%E5%92%8C%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17806f96d3c135b88cbe9c/image%202.png)
+
+- Cross attention是计算object_query和图像特征的注意力，表示object_query作为查询，在key（就是图像特征，也叫source）中查询到需要哪些图像信息（attn分数），并从value中（也是图像特征，也叫source）拿到相应信息并更新object_query
+
+## DecoderLayer 和 FFN
+
+![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(3)%20-%20Decoder%E5%92%8C%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17806f96d3c135b88cbe9c/image%203.png)
+
+```python
+class DetrDecoderLayer(nn.Layer):
+    """Detr Encoder Layer: self-attn, cross-attn and ffn"""
+    def __init__(self, embed_dim, ffn_dim, num_heads, dropout_rate=0.0):
+        super().__init__()
+        self.embed_dim = embed_dim
+        self.dropout = nn.Dropout(dropout_rate)
+        # Self-Attn
+        self.self_attn = DetrMultiHeadAttention(embed_dim=embed_dim,
+                                                num_heads=num_heads,
+                                                dropout_rate=dropout_rate)
+        self.self_attn_norm = nn.LayerNorm(embed_dim)
+        # Cross-Attn
+        self.cross_attn = DetrMultiHeadAttention(embed_dim=embed_dim,
+                                                 num_heads=num_heads,
+                                                 dropout_rate=dropout_rate)
+        self.cross_attn_norm = nn.LayerNorm(embed_dim)
+        # FFN
+        self.act = nn.ReLU()
+        self.act_dropout = nn.Dropout(dropout_rate)
+        self.fc1 = nn.Linear(embed_dim, ffn_dim)
+        self.fc2 = nn.Linear(ffn_dim, embed_dim)
+        self.norm = nn.LayerNorm(embed_dim)
+
+    def forward(self,
+                x,
+                attn_mask,
+                pos_embeds,
+                encoder_x,
+                encoder_attn_mask,
+                encoder_pos_embeds):
+        # self-attn
+        h = x
+        x, attn_w = self.self_attn(x, attn_mask, pos_embeds)
+        x = self.dropout(x)
+        x = h + x
+        x = self.self_attn_norm(x)
+        # cross-attn
+        h = x
+        x, cross_attn_w = self.cross_attn(x=x,
+                                          attn_mask=encoder_attn_mask,
+                                          pos_embeds=pos_embeds,
+                                          encoder_x=encoder_x,
+                                          encoder_pos_embeds=encoder_pos_embeds)
+        x = self.dropout(x)
+        x = h + x
+        x = self.cross_attn_norm(x)
+        # ffn
+        h = x
+        x = self.fc1(x)
+        x = self.act(x)
+        x = self.act_dropout(x)
+        x = self.fc2(x)
+        x = self.dropout(x)
+        x = h + x
+        x = self.norm(x)
+
+        outputs = (x, attn_w, cross_attn_w)
+        return outputs
+```
+
+### DecoderLayer实现了：
+
+1. self attention
+2. cross attention
+3. ffn
+4. 对应的Norm层和残差连接
+5. self attn的attn mask是None，在这里每个object query不需要mask
+6. cross attn的attn mask是和encoder相同的padding的mask，作为参数传进来即可
+
+## Decoder整体结构：
+
+```python
+class DetrDecoder(nn.Layer):
+    """Detr Decoder"""
+    def __init__(self, embed_dim, ffn_dim, num_heads, num_decoder_layers=6, dropout_rate=0.0):
+        super().__init__()
+        self.layers = nn.LayerList([
+            DetrDecoderLayer(embed_dim=embed_dim,
+                             ffn_dim=ffn_dim,
+                             num_heads=num_heads,
+                             dropout_rate=dropout_rate) for _ in range(num_decoder_layers)])
+        self.dropout = nn.Dropout(dropout_rate)
+        self.layernorm = nn.LayerNorm(embed_dim)
+
+    def forward(self,
+                input_embeds,
+                attn_mask,
+                pos_embeds,
+                encoder_x,
+                encoder_attn_mask,
+                encoder_pos_embeds):
+        x = input_embeds
+        decoder_states = []  # stores [input, layer1_out, layer2_out ... layerN_out]
+        all_self_attn_w = []
+        all_cross_attn_w = []
+
+        if encoder_attn_mask is not None:
+            bs, seq_l = encoder_attn_mask.shape
+            _, tgt_l, _ = input_embeds.shape  # [bs, tgt_l, embed_dim]
+            encoder_attn_mask = encoder_attn_mask.reshape([bs, 1, 1, seq_l])
+            encoder_attn_mask = encoder_attn_mask.expand([bs, 1, tgt_l, seq_l])
+            encoder_attn_mask = 1 - encoder_attn_mask  # now padded area is 1, image area is 0
+            # set padded area with small value
+            encoder_attn_mask = paddle.masked_fill(paddle.zeros(encoder_attn_mask.shape),
+                                                   encoder_attn_mask,
+                                                   paddle.finfo(paddle.float32).min)
+
+        for decoder_layer in self.layers:
+            decoder_states.append(x)
+            # inference
+            layer_out = decoder_layer(x,
+                                      attn_mask,
+                                      pos_embeds,
+                                      encoder_x,
+                                      encoder_attn_mask,
+                                      encoder_pos_embeds)
+            x, self_attn_w, cross_attn_w = layer_out
+
+            all_self_attn_w.append(self_attn_w)
+            all_cross_attn_w.append(cross_attn_w)
+
+        x = self.layernorm(x)
+        decoder_states.append(x)
+
+        return x, decoder_states, all_self_attn_w, all_cross_attn_w
+
+```
