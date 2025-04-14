@@ -18,13 +18,16 @@ A Paddle Implementation of Deformable DETR as described in:
 "DETR3D: 3D Object Detection from Multi-view Images via 3D-to-2D Queries"
 Paper Link: https://arxiv.org/abs/2110.06922
 """
+import os
+os.environ['GLOG_minloglevel'] = '9'
 import paddle
 from nuscenes_dataset import NuscenesDataset
 from detr3d import Detr3D
 
 def main():
     """load image from dataset and run inference"""
-    paddle.set_device("gpu")  # ["gpu", "cpu"]
+    #paddle.set_device("gpu")  # ["gpu", "cpu"]
+    paddle.set_device("cpu")  # ["gpu", "cpu"]
 
     # create dataset and dataloader
     data_root = 'data/nuscenes/'

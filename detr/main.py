@@ -18,6 +18,8 @@ A Paddle Implementation of Deformable DETR as described in:
 "Deformable DETR: Deformable Transformers for End-to-End Object Detection"
 Paper Link: https://arxiv.org/abs/2010.04159
 """
+import os
+os.environ['GLOG_minloglevel'] = '9'
 from PIL import Image
 import requests
 import numpy as np
@@ -162,8 +164,8 @@ def postprocess(logits, pred_boxes, target_sizes=None, threshold=0.9):
 
 def main():
     """ load image and run inference"""
-    #paddle.device.set_device("cpu")
-    paddle.device.set_device("gpu")
+    paddle.device.set_device("cpu")
+    #paddle.device.set_device("gpu")
     # load image
     url = 'http://images.cocodataset.org/val2017/000000039769.jpg'
     image = Image.open(requests.get(url, stream=True, timeout=20).raw)
