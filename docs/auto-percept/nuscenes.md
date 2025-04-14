@@ -8,13 +8,13 @@
 
 我们为了方便学习，这里先下载Mini版本，大约3.88G。
 
-![Screenshot 2024-10-04 at 09.42.07.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ANuScenes%20%E6%95%B0%E6%8D%AE%E9%9B%86%201bd3135fac1780e6a232c1a227160f03/Screenshot_2024-10-04_at_09.42.07.png)
+![Screenshot 2024-10-04 at 09.42.07.png](nusenes/Screenshot_2024-10-04_at_09.42.07.png)
 
 ## 传感器分布
 
 官网上有一张图，展示了数据采集车的传感器分布，其中：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ANuScenes%20%E6%95%B0%E6%8D%AE%E9%9B%86%201bd3135fac1780e6a232c1a227160f03/image.png)
+![image.png](nusenes/image.png)
 
 - 1x Lidar：32线，20Hz， 360度
 - 6x Camera：12Hz，1600x1200分辨率（crop到1600x900）
@@ -26,7 +26,7 @@
 
 文件下载并解压后可以看到如下的文件格式，这里我们
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ANuScenes%20%E6%95%B0%E6%8D%AE%E9%9B%86%201bd3135fac1780e6a232c1a227160f03/image%201.png)
+![image.png](nusenes/image%201.png)
 
 我们可以看到有个文件夹samples和sweeps的文件结构一样，这个两个文件夹存的是不同类型的传感器数据，具体来说：
 
@@ -56,7 +56,7 @@ nusc = NuScenes(version='v1.0-mini', dataroot='./data/v1.0-mini/', verbose=True)
 
 如果导入成功，那么会显示类似如下的信息：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ANuScenes%20%E6%95%B0%E6%8D%AE%E9%9B%86%201bd3135fac1780e6a232c1a227160f03/image%202.png)
+![image.png](nusenes/image%202.png)
 
 ### 3. 数据组织结构
 
@@ -93,7 +93,7 @@ first_sample_token = my_scene[’first_sample_token’]
 nusc.render_sample(first_sample_token)
 ```
 
-![Figure_1.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ANuScenes%20%E6%95%B0%E6%8D%AE%E9%9B%86%201bd3135fac1780e6a232c1a227160f03/Figure_1.png)
+![Figure_1.png](nusenes/Figure_1.png)
 
 可以使用.get(’sample’, token)方法获得metadata：
 
@@ -107,7 +107,7 @@ nusc.list_sample(my_sample['token'])
 - 在sample中，使用‘data’ key来索引到sample对应的传感器数据： `my_sample[’data’]`
 - 使用例如`nusc.get(’sample_data’, my_sample[’data’][’CAM_FRONT’])` 的方式，可以查看sample_data的metadata
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ANuScenes%20%E6%95%B0%E6%8D%AE%E9%9B%86%201bd3135fac1780e6a232c1a227160f03/image%203.png)
+![image.png](nusenes/image%203.png)
 
 - 使用例如`nusc.render_sample_data(cam_front_data['token'])` 的方式，可视化某一个sensor的sample_data
 

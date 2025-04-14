@@ -1,6 +1,6 @@
 # 从零开始学DETR (4) - 从查询到检测：Transformer Decoder
 
-![DETR Transformer的整体结构](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(3)%20-%20%E6%8D%95%E6%8D%89%E5%85%A8%E5%B1%80%E5%85%B3%E7%B3%BB%EF%BC%9ATransformer%20Encoder%201b93135fac178057880cf15cf7dede36/image.png)
+![DETR Transformer的整体结构]detr4/image.png)
 
 DETR Transformer的整体结构
 
@@ -8,7 +8,7 @@ DETR 通过使用 Transformer 结构进行目标检测。输入图像首先经�
 
 # Transformer Decoder
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(4)%20-%20%E4%BB%8E%E6%9F%A5%E8%AF%A2%E5%88%B0%E6%A3%80%E6%B5%8B%EF%BC%9ATransformer%20Decoder%201b93135fac1780fc8dede06699b1afce/image.png)
+![image.png](detr4/image.png)
 
 ## 目标查询 （Object Query）
 
@@ -50,7 +50,7 @@ Decoder 自注意力（Self-Attention）部分是根据目标查询嵌入（obje
 
 因此，自注意力机制不依赖于 Encoder 的输出。目标查询向量之间的关系被通过自注意力计算加权和更新，逐步增强目标查询的表示能力。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(4)%20-%20%E4%BB%8E%E6%9F%A5%E8%AF%A2%E5%88%B0%E6%A3%80%E6%B5%8B%EF%BC%9ATransformer%20Decoder%201b93135fac1780fc8dede06699b1afce/image%201.png)
+![image.png](detr4/image%201.png)
 
 ## 交叉注意力Cross Attention
 
@@ -60,11 +60,11 @@ Decoder 中的 **Cross Attention** 模块与自注意力机制不同，它通过
 
 因此，Cross Attention 机制允许 Decoder 利用 Encoder 提供的全局视觉信息，通过与目标查询之间的交互，进一步优化目标查询的表示，以提高目标检测的精度。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(4)%20-%20%E4%BB%8E%E6%9F%A5%E8%AF%A2%E5%88%B0%E6%A3%80%E6%B5%8B%EF%BC%9ATransformer%20Decoder%201b93135fac1780fc8dede06699b1afce/image%202.png)
+![image.png](detr4/image%202.png)
 
 ## **前馈神经网络FFN （同Encoder）**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(3)%20-%20%E6%8D%95%E6%8D%89%E5%85%A8%E5%B1%80%E5%85%B3%E7%B3%BB%EF%BC%9ATransformer%20Encoder%201b93135fac178057880cf15cf7dede36/image%203.png)
+![image.png]detr4/image%203.png)
 
 FFN 是 Transformer 中的重要组成部分，主要由线性层、激活层和残差连接构成。它对每个输入 Token 独立地进行非线性变换，进一步提升特征表达能力。
 
@@ -96,7 +96,7 @@ FFN 逐 Token 独立处理，没有引入序列间的交互，专注于每个 To
 
 ## **残差连接和归一化（同Encoder）**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(4)%20-%20%E4%BB%8E%E6%9F%A5%E8%AF%A2%E5%88%B0%E6%A3%80%E6%B5%8B%EF%BC%9ATransformer%20Decoder%201b93135fac1780fc8dede06699b1afce/image%203.png)
+![image.png](detr4/image%203.png)
 
 **1. 残差连接 (Residual Connection)**
 

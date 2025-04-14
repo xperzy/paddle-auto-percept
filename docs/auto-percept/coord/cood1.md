@@ -71,7 +71,7 @@ $\begin{bmatrix} s_x & 0 & 0 & 0 \\  0 & s_y & 0 & 0 \\  0 & 0 & s_z & 0 \\ 0 & 
 - $\mathrm{sin}(\theta) = \dfrac{y} {R} , \mathrm{cos}(\theta) = \dfrac{x} {R}$
 - $\mathrm{sin}(\epsilon) = \dfrac{y'} {R} , \mathrm{cos}(\epsilon) = \dfrac{x'} {R}$
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E7%9F%A9%E9%98%B5%E6%97%8B%E8%BD%AC%E5%B9%B3%E7%A7%BB%E5%9F%BA%E7%A1%80%201bd3135fac17815e9696f6e74e6f03d6/image.png)
+![image.png](cood1/image.png)
 
 $(x',y')$ 相对于$(x, y)$旋转的角度是 $\gamma = \epsilon - \theta$
 

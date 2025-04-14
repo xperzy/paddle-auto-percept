@@ -6,7 +6,7 @@
 
 # DETR的整体流程：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(1)%20-%20DETR%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201b93135fac178069b64de87e884793c1/image.png)
+![image.png](detr1/image.png)
 
 从上图中可以看到DETR的模型主要分为以下4个部分：
 
@@ -24,7 +24,7 @@
 
 # DETR的Transformer结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(1)%20-%20DETR%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201b93135fac178069b64de87e884793c1/image%201.png)
+![image.png](detr1/image%201.png)
 
 图中展示了 Transformer Encoder 和 Decoder 的结构及其计算过程。之后的章节我们会详细介绍并实现这些计算，其中对于初学者来说，不太容易理解的部分是 **object queries**，这里我们首先介绍一下object query的概念。
 

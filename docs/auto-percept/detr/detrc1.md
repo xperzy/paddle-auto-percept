@@ -1,6 +1,6 @@
 # 从零开始实现DETR (1) - Backbone和特征提取
 
-![ResNet50的整体结构图](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(1)%20-%20Backbone%E5%92%8C%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%201ba3135fac1780d5ad22ea59e9ff465c/image.png)
+![ResNet50的整体结构图](detrc1/image.png)
 
 ResNet50的整体结构图
 

@@ -73,7 +73,7 @@ $$
 
 可视化：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ATransformer%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81%201bd3135fac1780fc8d08dd797ac610ee/image.png)
+![image.png](pe/image.png)
 
 ### DETR中的2维position encoding代码实现：
 

@@ -1,6 +1,6 @@
 # 从零开始学DETR (3) - 捕捉全局关系：Transformer Encoder
 
-![DETR Transformer的整体结构](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(3)%20-%20%E6%8D%95%E6%8D%89%E5%85%A8%E5%B1%80%E5%85%B3%E7%B3%BB%EF%BC%9ATransformer%20Encoder%201b93135fac178057880cf15cf7dede36/image.png)
+![DETR Transformer的整体结构](detr3/image.png)
 
 DETR Transformer的整体结构
 
@@ -38,7 +38,7 @@ DETR 通过使用 Transformer 结构实现特征提取和目标检测。输入�
 
 # Transformer Encoder
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(3)%20-%20%E6%8D%95%E6%8D%89%E5%85%A8%E5%B1%80%E5%85%B3%E7%B3%BB%EF%BC%9ATransformer%20Encoder%201b93135fac178057880cf15cf7dede36/image%201.png)
+![image.png](detr3/image%201.png)
 
 Encoder首先是一个多层的网络结构，其中主要包含：
 
@@ -53,7 +53,7 @@ Encoder首先是一个多层的网络结构，其中主要包含：
 
 Encoder 中的注意力机制通过对图像 Token 序列进行线性变换生成查询 (Q)、键 (K) 和值 (V)。通过计算每两个 Token 的相关性生成注意力权重，用于衡量输出特征需要从各 Token 中获取的信息量。最终，将注意力权重加权的值与线性变换后的 Token 结合，生成融合各 Token 信息的输出特征，从而实现更丰富的特征表达。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(3)%20-%20%E6%8D%95%E6%8D%89%E5%85%A8%E5%B1%80%E5%85%B3%E7%B3%BB%EF%BC%9ATransformer%20Encoder%201b93135fac178057880cf15cf7dede36/image%202.png)
+![image.png](detr3/image%202.png)
 
 ### **线性变换**
 
@@ -103,7 +103,7 @@ $Attn = Softmax(Attn)$
 
 ## **FFN（前馈神经网络）**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(3)%20-%20%E6%8D%95%E6%8D%89%E5%85%A8%E5%B1%80%E5%85%B3%E7%B3%BB%EF%BC%9ATransformer%20Encoder%201b93135fac178057880cf15cf7dede36/image%203.png)
+![image.png](detr3/image%203.png)
 
 FFN 是 Transformer 中的重要组成部分，主要由线性层、激活层和残差连接构成。它对每个输入 Token 独立地进行非线性变换，进一步提升特征表达能力。
 
@@ -130,7 +130,7 @@ FFN 逐 Token 独立处理，没有引入序列间的交互，专注于每个 To
 
 ## **残差连接和归一化**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(3)%20-%20%E6%8D%95%E6%8D%89%E5%85%A8%E5%B1%80%E5%85%B3%E7%B3%BB%EF%BC%9ATransformer%20Encoder%201b93135fac178057880cf15cf7dede36/image%204.png)
+![image.png](detr3/image%204.png)
 
 **1. 残差连接 (Residual Connection)**
 

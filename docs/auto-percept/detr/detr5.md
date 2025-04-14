@@ -2,7 +2,7 @@
 
 DETR中，Object Query在经过Decoder之后，得到了num_queries个包含了目标位置、类别等信息的特征向量，这些特征向量将作为输入给到接下来的检测头中，检测头负责将这些特征转换为障碍物的具体类别，以及目标框的位置和大小。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6DETR%20(5)%20-%20%E5%88%86%E7%B1%BB%E4%B8%8E%E5%9B%9E%E5%BD%92%EF%BC%9ADetHead%201b93135fac1780c7aa15fb030c0c1084/image.png)
+![image.png](detr5/image.png)
 
 # 检测头
 

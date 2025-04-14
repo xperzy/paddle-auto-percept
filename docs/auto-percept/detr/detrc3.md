@@ -1,6 +1,6 @@
 # 从零开始实现DETR (3) - Decoder和交叉注意力
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(3)%20-%20Decoder%E5%92%8C%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17806f96d3c135b88cbe9c/image.png)
+![image.png](detrc3/image.png)
 
 ## Multihead Attention：
 
@@ -83,19 +83,19 @@ class DetrMultiHeadAttention(nn.Layer):
 
 ### Self-Attention计算的时候：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(3)%20-%20Decoder%E5%92%8C%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17806f96d3c135b88cbe9c/image%201.png)
+![image.png](detrc3/image%201.png)
 
 - Self attention是计算object_query自己和自己的注意力，object_query是初始化为0的维度为[num_queries, embed_dim]的tensor，加上可学习的query_pos_embeds代表位置信息，作为decoder的输入。这个object_query可以理解为是目标（target），就是我们希望通过网络优化其中每一个元素，使得其包含有每个障碍物的位置和类别等信息，用于之后的分类和框回归。
 
 ### Cross Attention计算的时候：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(3)%20-%20Decoder%E5%92%8C%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17806f96d3c135b88cbe9c/image%202.png)
+![image.png](detrc3/image%202.png)
 
 - Cross attention是计算object_query和图像特征的注意力，表示object_query作为查询，在key（就是图像特征，也叫source）中查询到需要哪些图像信息（attn分数），并从value中（也是图像特征，也叫source）拿到相应信息并更新object_query
 
 ## DecoderLayer 和 FFN
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(3)%20-%20Decoder%E5%92%8C%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17806f96d3c135b88cbe9c/image%203.png)
+![image.png](detrc3/image%203.png)
 
 ```python
 class DetrDecoderLayer(nn.Layer):

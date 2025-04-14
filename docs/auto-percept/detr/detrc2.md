@@ -1,6 +1,6 @@
 # 从零开始实现DETR (2) -  Encoder和自注意力
 
-![Encoder Layer and Multi-head Self-Attention](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(2)%20-%20Encoder%E5%92%8C%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17807397feffd923814b57/image.png)
+![Encoder Layer and Multi-head Self-Attention](detrc2/image.png)
 
 Encoder Layer and Multi-head Self-Attention
 
@@ -88,7 +88,7 @@ class DetrMultiHeadAttention(nn.Layer):
 2. Attn mask：输入是`[bs, 1, tgt_l, src_l]`的维度，通过broadcasting机制，与attn分数相加`[bs, num_heads, tgt_l, src_l]`。在attn mask中，图像特征区域被设置为0， padding部分设置为flaot的最小值，与attn分数相加之后，padding的部分再经过softmax就会变成0。对于attn分数来说，padding的部分表示不需要关注这部分。
     - softmax： $\mathrm{softmax}() = \dfrac{e^{z_i}}{\Sigma_i{e^{z_i}}}$，$z_i$越小，$e^{z_i}$就越接近0，所以加上float的最小值（是一个负数），经过softmax之后该项就会近似于0。
 
-![Encoder Layer and Feed Forward Network (FFN)](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(2)%20-%20Encoder%E5%92%8C%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%201ba3135fac17807397feffd923814b57/image%201.png)
+![Encoder Layer and Feed Forward Network (FFN)](detrc2/image%201.png)
 
 Encoder Layer and Feed Forward Network (FFN)
 

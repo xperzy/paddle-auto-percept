@@ -6,11 +6,11 @@
 
 ## 针孔相机模型Pinhole Camera Model
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%201bd3135fac17814b8c63cbe8f7d39cfb/image.png)
+![image.png](cood2/image.png)
 
 针孔相机模型（不是针孔相机）是用来描述3D空间中的一个点坐标，经过一个理想化的针孔相机，投影到2D平面上的数学关系表示。这个针孔相机假设光圈是一个点，并且没有镜头聚集光线。具体来说，针孔相机模型可以通过相似三角形原理求出3D到2D的转换。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%201bd3135fac17814b8c63cbe8f7d39cfb/image%201.png)
+![image.png](cood2/image%201.png)
 
 **坐标系：**
 
@@ -28,15 +28,15 @@
 
 **投影关系：**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%201bd3135fac17814b8c63cbe8f7d39cfb/image%202.png)
+![image.png](cood2/image%202.png)
 
 我们从不同视角观察上图，可以得到2D的投影关系：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%201bd3135fac17814b8c63cbe8f7d39cfb/image%203.png)
+![image.png](cood2/image%203.png)
 
 同理，可以得到
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%201bd3135fac17814b8c63cbe8f7d39cfb/image%204.png)
+![image.png](cood2/image%204.png)
 
 通过相似三角形原理，我们可以求出2D相机坐标系下q点的坐标：
 
@@ -50,7 +50,7 @@
 1. 将坐标系旋转180度
 2. 假设有一个虚拟的图像平面，距离光心的距离不是-f，而是f（也就是在光心前方）例如下图：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%201bd3135fac17814b8c63cbe8f7d39cfb/image%205.png)
+![image.png](cood2/image%205.png)
 
 通常在实现的时候，例如数码相机，我们可以在读取pixel的时候，就按照旋转后的顺序来读取，这样得到的图像就已经经过旋转了。
 
@@ -105,7 +105,7 @@ $$
 
 ## Lidar坐标系(Lidar)， 车辆坐标系(Ego)，世界坐标系(World)
 
-![image.png](../%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ANuScenes%20%E6%95%B0%E6%8D%AE%E9%9B%86%201bd3135fac1780e6a232c1a227160f03/image.png)
+![image.png](cood2/image.png)
 
 如上图中所示的Nuscenes数据集的传感器分布以及其对应的坐标系，可以看到：
 
@@ -121,7 +121,7 @@ $$
 
 ### 坐标系转换：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%201bd3135fac17814b8c63cbe8f7d39cfb/image%206.png)
+![image.png](cood2/image%206.png)
 
 在自动驾驶的车上，不同的传感器都安装在不同的位置，而且不同的传感器也都有各自的坐标系。因此，同一个物体，在不同的传感器坐标系下，有不同的坐标，感知常常需要在这些传感器之间进行转换和对齐，就会用到坐标系转换计算。获得传感器之间的转换关系的过程通常叫做标定。
 
@@ -150,7 +150,7 @@ $$
 P_{cam} = R^{-1}\cdot P_{lidar} - R^{-1}T
 $$
 
-具体的旋转平移计算方式，可以参考上一篇[从零开始学 - 矩阵旋转平移基础](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E7%9F%A9%E9%98%B5%E6%97%8B%E8%BD%AC%E5%B9%B3%E7%A7%BB%E5%9F%BA%E7%A1%80%201bd3135fac17815e9696f6e74e6f03d6.md) 
+具体的旋转平移计算方式，可以参考上一篇[从零开始学 - 矩阵旋转平移基础](cood1.md) 
 
 ### 常见的坐标系：
 
