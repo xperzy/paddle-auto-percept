@@ -1,6 +1,6 @@
 # 从零开始实现 BEVFormer (3) - BEVFormerTransformer类
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20BEVFormer%20(3)%20-%20BEVFormerTransformer%E7%B1%BB%201c13135fac178017b737f26bc0886fb3/image.png)
+![image.png](bfc3/image.png)
 
 ### 这个类主要的成员变量包括：
 
@@ -21,7 +21,7 @@
 4. Decoder推理
 5. 返回结果
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20BEVFormer%20(3)%20-%20BEVFormerTransformer%E7%B1%BB%201c13135fac178017b737f26bc0886fb3/image%201.png)
+![image.png](bfc3/image%201.png)
 
 ## 1. 准备Encoder的输入
 
@@ -75,7 +75,7 @@
     
     首先我们有一些已知量，这些是从车辆IMU中可以读取到的：（delta_x, delta_y），`delta_x` 和 `delta_y` 分别表示自车在 **x 和 y 方向上的位移差**，通常是指自车在两个时间帧之间（当前帧和历史帧）的位置变化。单位一般为 **米**。是从img_meta中读取的，(delta_x, delta_y)是一个向量，可以计算出主车从上一位置到当前位置的角度和距离。可以理解成是整个bev特征图（按中心点）从某个位置移动到了另一个位置。
     
-    ![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20BEVFormer%20(3)%20-%20BEVFormerTransformer%E7%B1%BB%201c13135fac178017b737f26bc0886fb3/image%202.png)
+    ![image.png](bfc3/image%202.png)
     
     Nuscenes数据集中， ego coords, 自车的坐标轴就是:
     
@@ -89,11 +89,11 @@
     - y轴：沿地图方向向下
     - 原点：地图左上角
     
-    ![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20BEVFormer%20(3)%20-%20BEVFormerTransformer%E7%B1%BB%201c13135fac178017b737f26bc0886fb3/image%203.png)
+    ![image.png](bfc3/image%203.png)
     
     ego_angle，就是运动角度，从img_meta中读取。`ego_angle` 通常以弧度或角度表示，是一个标量，表示自车的朝向相对于某个参考坐标系的偏转角
     
-    ![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20BEVFormer%20(3)%20-%20BEVFormerTransformer%E7%B1%BB%201c13135fac178017b737f26bc0886fb3/image%204.png)
+    ![image.png](bfc3/image%204.png)
     
     所以我们计算当前bev下，之前bev的shift，就
     
