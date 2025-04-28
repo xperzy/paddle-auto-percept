@@ -9,7 +9,7 @@
 
 # 图像特征的自注意力：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(4)%20-%20%E4%BB%8E%20Query%20%E5%88%B0%E5%85%B3%E9%94%AE%E7%82%B9%EF%BC%9A%E5%81%8F%E7%A7%BB%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8E%9F%E7%90%86%201ba3135fac1780d4bd3ee09ab634e7ff/image.png)
+![image.png](dd4/image.png)
 
 图像特征在进入Encoder模块后，以一个Token序列的形式进入到自注意力计算模块，在DeformableDETR中使用的是Deformable Attention。具体来说：
 
@@ -53,7 +53,7 @@
 
 ## Object Query和图像特征的交叉注意力：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(4)%20-%20%E4%BB%8E%20Query%20%E5%88%B0%E5%85%B3%E9%94%AE%E7%82%B9%EF%BC%9A%E5%81%8F%E7%A7%BB%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8E%9F%E7%90%86%201ba3135fac1780d4bd3ee09ab634e7ff/image%201.png)
+![image.png](dd4/image%201.png)
 
 在Decoder中，计算图像特征（实际上是encoder部分的输出）和object query之间的交叉注意力，也使用了Deformable attention计算，具体的计算方式和Decoder的self-attention有几个区别：
 
