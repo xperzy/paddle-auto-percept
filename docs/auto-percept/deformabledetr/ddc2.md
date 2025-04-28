@@ -2,13 +2,13 @@
 
 我们首先来看一下DeformableDETR的整体结构：
 
-![image.png](dd4/image.png)
+![image.png](ddc2/image.png)
 
 在上一节中，我们实现了ResNet的Image Backbone，本节我们来实现Encoder部分。
 
 ### Encoder和EncoderLayer结构：
 
-![image.png](dd4/image%201.png)
+<img src="ddc2/image%201.png" style="width:50%;">
 
 上图实际上展示了EncoderLayer的结构，在代码实现的时候，我们可以先实现`DeformableDetrEncoder`类，这个类实际上是包含了多个上图中的模块（多层EncoderLayer），并且还实现了注意力计算所需要的输入ReferencePoint的生成方法。
 
