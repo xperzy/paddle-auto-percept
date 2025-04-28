@@ -2,7 +2,7 @@
 
 **Decoder的完整结构图如下：**
 
-![image.png](ddc1/image.png)
+![image.png](ddc4/image.png)
 
 **Decoder本身是由N个DecoderLayer组成，每个DecoderLayer具有相同的结构**
 
