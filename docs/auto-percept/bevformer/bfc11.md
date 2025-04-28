@@ -57,11 +57,11 @@ https://www.nuscenes.org/download
 
 代码学习和开发阶段，我们可以只下载mini版本：
 
-![image.png](../%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20DETR3D%201bd3135fac17804e8a8fe06f94f339e8/%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%202.png)
+![image.png](../nuscenes/image%202.png)
 
 下载完成后，同样将数据解压放在项目文件夹下，例如： `BEVFormer/data/` ，文件结构应该是类似下面截屏的内容：
 
-![image.png](../%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20DETR3D%201bd3135fac17804e8a8fe06f94f339e8/%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%203.png)
+![image.png](../nuscenes/image%203.png)
 
 ## 5. 环境配置
 
