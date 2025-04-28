@@ -4,7 +4,7 @@
 
 https://arxiv.org/abs/2203.17270
 
-![BEVFormer 整体结构图（引用自论文）](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(1)%20-%20BEVFormer%20%E7%9A%84%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%201c13135fac1780989e7af61b94dc2eaa/image.png)
+![BEVFormer 整体结构图（引用自论文）](bf1/image.png)
 
 BEVFormer 整体结构图（引用自论文）
 
@@ -14,7 +14,7 @@ BEVFormer 整体结构图（引用自论文）
 
 - Bird’s Eye View特征，是指在自动驾驶感知领域中，将车辆周围的三维世界，投影到一个2维的鸟瞰图上进行表示的一种方式。鸟瞰图也可以叫做俯视图。例如下图中，所有红色框的部分，都可以称作是BEV特征。我们的目标也是学习这个特征，使得其中每个位置都包含有对应真实空间中的丰富语义信息。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(1)%20-%20BEVFormer%20%E7%9A%84%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%201c13135fac1780989e7af61b94dc2eaa/bc37b5e9-216c-4783-99c2-a79429c30b09.png)
+![image.png](bf1/bc37b5e9-216c-4783-99c2-a79429c30b09.png)
 
 - BEV特征可以通过深度学习算法，将不同的传感器的数据转换到BEV视角下的特征，能够帮助系统更好的理解周围的环境
 
@@ -36,12 +36,12 @@ BEVFormer模型的输入是多视角的视觉图像，经过模型encoder和deco
 - **BEV Query**：在BEVFormer中，Encoder会设置一个**BEV Query**，这实际上是一个初始化的查询向量，它代表了BEV特征，只不过此时还没有学到任何东西。Encoder的作用是通过注意力机制将历史帧的BEV特征与BEV Query相结合，之后再将多视角图像特征与BEV Query相结合**。**
 - **Temporal Self-Attention:** 用于将历史BEV特征和当前BEV查询相结合的注意力计算，结合部分BEVFormer采用了concat这样比较直接的操作，但需要注意的是，这里有很多实现细节，用于保证前后帧的BEV特征的对齐。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(1)%20-%20BEVFormer%20%E7%9A%84%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%201c13135fac1780989e7af61b94dc2eaa/image%201.png)
+![image.png](bf1/image%201.png)
 
 - **Spatial Cross-Attention**： 用于将图像特征和当前BEV查询相结合的注意力计算，这部分类似于DETR3D的计算，但用于特征采样的参考点位置，在BEVFormer中是基于BEV特征图生成的，也就是说，根据BEV特征图（本身具有空间意义）的位置，在各个视角的对应位置上，进行图像特征采样，用于计算当前点的注意力。也正是这一步，BEVFormer结构才获得了图像信息。这里，找到BEV的3D参考点在图像上的位置，会用到3D到2D投影相关计算。
     - 图中右边所示，彩色部分是各个视角的图像特征，中间格子是BEV特征。步骤是，首先在BEV特征上生成参考点位置，这些点是3D空间的具有位置信息的坐标点。其次，将这些点的3D位置，通过相机的内外参，坐标系转换等方式，投影到各个视角下找到对应的位置。最后，基于这些位置进行特征采样，并用于该3D点的特征注意力计算。输出是基于BEV的2D特征，所以会把这些3D点特征以及多个采样点进行合并。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(1)%20-%20BEVFormer%20%E7%9A%84%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%201c13135fac1780989e7af61b94dc2eaa/image%202.png)
+![image.png](bf1/image%202.png)
 
 - 这一过程的目标是将来自不同视角的信息、还有前帧的信息，编码进BEV Query中，最终使得BEV Query能够捕捉到整个场景的空间和时间信息。
 
