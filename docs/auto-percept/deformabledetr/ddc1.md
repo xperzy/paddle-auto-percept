@@ -1,6 +1,6 @@
 # 从零开始实现 Deformable DETR (1) - Backbone：多尺度特征提取
 
-![ResNet50的整体结构图](../%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20DETR%201b93135fac178006862ced462f6b4412/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0DETR%20(1)%20-%20Backbone%E5%92%8C%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%201ba3135fac1780d5ad22ea59e9ff465c/image.png)
+![ResNet50的整体结构图](../detr/detrc1/image.png)
 
 ResNet50的整体结构图
 
@@ -162,7 +162,7 @@ class Resnet50Feature(nn.LayerDict)：
 
 ### 多层图像特征到Encoder的输入：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(2)%20-%20%E4%BB%8E%E5%9B%BE%E5%83%8F%E5%88%B0%E7%89%B9%E5%BE%81%EF%BC%9AImage%20Backbone%201ba3135fac17802aba32de33779f4b61/image.png)
+![image.png](dd2/image.png)
 
 在得到ResNet的特征之后，DeformableDETR还有一个Input_proj层，将图像特征映射到合适的维度：
 
