@@ -8,7 +8,7 @@ https://arxiv.org/pdf/2010.04159
 
 # Deformable DETR的整体结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6Deformable%20DETR%20(1)%20-%20Deformable%20DETR%20%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201ba3135fac17806ca12ae0db5182fdca/image.png)
+![image.png](dd1/image.png)
 
 **从上图中可以看到Deformable DETR的整体结构包含：**
 
@@ -27,7 +27,7 @@ https://arxiv.org/pdf/2010.04159
 
 # Deformable Attention Module：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6Deformable%20DETR%20(1)%20-%20Deformable%20DETR%20%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201ba3135fac17806ca12ae0db5182fdca/image%201.png)
+![image.png](dd1/image%201.png)
 
 **可以从上图中看到Deformable Attention的计算过程：**
 
