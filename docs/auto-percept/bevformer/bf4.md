@@ -1,10 +1,10 @@
 # 从零开始学 BEVFormer (4) -  EncoderLayer的整体结构
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(3)%20-%20Encoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac17808a887adb4734664e80/image.png)
+![image.png](bf3/image.png)
 
 上一节我们重点学习了Encoder的输入部分，这一节我们将详细分析Encoder的部分，以及这些输入是如何经过Encoder进行相关计算的。Encoder部分可以说是BEVFromer的核心部分，它最重要的作用就是学习BEV特征表达，利用了（1）前序帧的BEV特征（2）环视图像的图像特征；为此BEVFormer设计了TSA和SCA两种注意力，通过可变形注意力计算和3D投影等方式，完成了时间和空间上的信息融合。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image.png)
+![image.png](bf4/image.png)
 
 上图是BEVFormer的Transformer的整体结构，上一节中我们知道，输入给Transformer Encoder的主要是：
 
@@ -14,7 +14,7 @@
 
 ## Encoder的结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image%201.png)
+![image.png](bf4/image%201.png)
 
 Encoder的结构主要包含了：
 
@@ -27,7 +27,7 @@ Encoder的结构主要包含了：
 
 ## EncoderLayer的结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image%202.png)
+![image.png](bf4/image%202.png)
 
 从上图可以看到，EncoderLayer的结构类似于标准Transformer的“Decoder”结构（标准的Encoder通常只有Self-Attn），只不过将标准的Self-Attn和Cross-Attn变成了：
 
@@ -53,7 +53,7 @@ TSA和SCA的结构我们在接下来的章节中会详细分析。本节我们�
 
 假设我们有一个BEV特征图：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image%203.png)
+![image.png](bf4/image%203.png)
 
 这个特征图的大小（h x w）是：6x8；其中每个位置（图中每个格子）表示一个元素的特征（是一个embed_dIm维度的特征向量）。
 
@@ -61,25 +61,25 @@ TSA和SCA的结构我们在接下来的章节中会详细分析。本节我们�
 
 那么，我们想找到真实世界中的坐标位置，那么就可以用1m x 1m的中心点位置作为这个区域（这个BEV特征在空间中的位置），也就是 （0.5, 0.5），单位是m（这里假设左上角是(0, 0)点)。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image%204.png)
+![image.png](bf4/image%204.png)
 
 在实际代码实现的时候，这里的2D参考点最终的目的是在特征图上进行特征采样，所以坐标位置会进行归一化（从实际的m归一化到0到1），使用的是相对坐标。
 
 ## 3D参考点：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image%205.png)
+![image.png](bf4/image%205.png)
 
 3D参考点和2D参考点类似，同样是在BEV特征大小上均匀采样整个网格中的位置，不同的地方是引入了高度，并且在高度上也进行均匀采样（图中蓝色的点）。得到的3D位置，再经过归一化处理，得到的3D位置，就是3D参考点。
 
 ## 3D参考点投影：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image%206.png)
+![image.png](bf4/image%206.png)
 
 我们的目标是求3D参考点位置对应的特征，这个特征又来自于各个相机返回的图片特征，如何将他们对应起来？ 这里就用到了3D点到2D点的投影。如上图所示，各个相机因为安装位置的不同，返回的图像视野、范围和角度都不相同，在给定相机内外参的情况下，我们可以根据相机坐标系的投影公式，计算出3D空间中的一点，对应2D图像上的像素坐标。通过这种方式，我们就可以得到同一个3D点，在各个视角下的像素位置，有了这些像素位置，因为图像特征与图像本身的空间信息是可以对应的（通常图像特征都是图像的x倍下采样），就可以得到特征图上的某个坐标。进而通过可变形注意力机制，就能够得到我们最终需要的3D坐标点的2D投影特征。
 
 接下来我们来看具体的计算过程，首先我们来看一下坐标系转换的过程。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image%207.png)
+![image.png](bf4/image%207.png)
 
 上图是Nuscene数据集的一个sensor和坐标系的参考图。可以看到
 
@@ -108,7 +108,7 @@ TSA和SCA的结构我们在接下来的章节中会详细分析。本节我们�
 
 BEVformer在实现的时候，我们定义的BEV空间中的3D参考点，理论上是以IMU坐标系表示，实现的时候，使用的是Lidar坐标系。这时候，3D参考点的原点就应该是lidar中心，主车向前是y轴正方向，主车向右为x轴正向，由地面向上方向为z轴正向。因此，对于3D点到图像的投影，就是将lidar坐标系下的点，投影到各个camera上的变换。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(4)%20-%20EncoderLayer%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac1780c2b9fecb29ff06be86/image%208.png)
+![image.png](bf4/image%208.png)
 
 ### Lidar坐标系：
 
