@@ -32,22 +32,22 @@ mmdet3d库依赖于mmdet库还有mmcv库等基础库，从环境配置到跑通�
 git clone https://github.com/fundamentalvision/BEVFormer.git
 ```
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image.png)
+![image.png](bfc11/image.png)
 
 ## 3. 下载模型文件
 
 从官方Github的文档中可以查找到**模型权重**和**config文件**的下载地址：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%201.png)
+![image.png](bfc11/image%201.png)
 
 下载完成后，将权重文件放在项目文件目录下，将config文件放在项目config文件夹下。例如：
 
 - 权重文件放在`ckpts/`下：例如`BEVFormer/ckpts/bevformer_small_epoch_24.pth`
 - 配置文件放在`projects/configs/bevformer`下
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%202.png)
+![image.png](bfc11/image%202.png)
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%203.png)
+![image.png](bfc11/image%203.png)
 
 ## 4. 下载数据
 
@@ -67,7 +67,7 @@ https://www.nuscenes.org/download
 
 官方提供的模型权重Log中，提供了非常详细的运行环境，我们可以打开进行查阅和参考。实际开发过程中，由于源码的开发时间相对比较早，一些环境和版本对于新一些的硬件以及大家常用的版本已经有些出入，经过作者验证，有一些库是可以使用新的版本，但由于大家的软硬件环境各不相同，这里不推荐具体的软件版本，大家可以参考下面的配置流程。
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%204.png)
+![image.png](bfc11/image%204.png)
 
 几个主要的版本（比较熟悉的可以直接对照和安装相关包）：
 
@@ -135,7 +135,7 @@ conda activate bevformer
     1. 连接（例如CUDA12.4）：https://developer.nvidia.com/cuda-12-4-0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=runfile_local
     2. 选择对应的平台然后按照命令下载：
     
-    ![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%205.png)
+    ![image.png](bfc11/image%205.png)
     
     ```bash
     wget https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_550.54.14_linux.run
@@ -145,21 +145,21 @@ conda activate bevformer
     
     - 安装CUDA：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%206.png)
+![image.png](bfc11/image%206.png)
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%207.png)
+![image.png](bfc11/image%207.png)
 
-![注意：这里不要勾选driver！](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%208.png)
+![注意：这里不要勾选driver！](bfc11/image%208.png)
 
 注意：这里不要勾选driver！
 
 安装完成后会显示如下内容：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%209.png)
+![image.png](bfc11/image%209.png)
 
 这一步之后，我们可以在路径`/usr/local/`下看到cuda文件夹。
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%2010.png)
+![image.png](bfc11/image%2010.png)
 
 这时我们可能会有多个CUDA版本，要怎么选择使用某一个CUDA版本呢？
 
@@ -244,7 +244,7 @@ mmdet3d在编译的时候，可能会出现报错，有可能是因为gcc版本�
     
     验证版本和正确性：
     
-    ![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%2011.png)
+    ![image.png](bfc11/image%2011.png)
     
 - **安装MMCV**
     
@@ -300,11 +300,11 @@ python tools/create_data.py nuscenes --root-path ./data/nuscenes --out-dir ./dat
 
 ```
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%2012.png)
+![image.png](bfc11/image%2012.png)
 
 运行成功后，会生成pkl文件：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%2013.png)
+![image.png](bfc11/image%2013.png)
 
 **运行源码：**
 
@@ -316,16 +316,16 @@ python tools/create_data.py nuscenes --root-path ./data/nuscenes --out-dir ./dat
 
 当命令正确运行，我们可以看到如下的进度条显示：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%2014.png)
+![image.png](bfc11/image%2014.png)
 
 此时的GPU被拉满，显存占用可以看到大约需要4.5G左右：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%2015.png)
+![image.png](bfc11/image%2015.png)
 
 **查看结果：**
 
 上面的命令运行完成（RTX4080移动版大约1min不到）后会有evaluation的结果显示：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ABEVFormer%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac178093a013d6934c59fd19/image%2016.png)
+![image.png](bfc11/image%2016.png)
 
 看到这些就表示运行成功了。
