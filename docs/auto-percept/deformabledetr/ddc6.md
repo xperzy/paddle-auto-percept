@@ -1,6 +1,6 @@
 # 从零开始实现 Deformable DETR (6) - 预测头与目标输出
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(6)%20-%20%E9%A2%84%E6%B5%8B%E5%A4%B4%E4%B8%8E%E7%9B%AE%E6%A0%87%E8%BE%93%E5%87%BA%201bb3135fac178003a5ebdbffe6321d42/image.png)
+![image.png](ddc6/image.png)
 
 ### 检测头：
 
