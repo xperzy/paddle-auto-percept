@@ -2,11 +2,12 @@
 
 **完整的结构图：**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(5)%20-%20DecoderLayer%E7%9A%84%E5%AE%9E%E7%8E%B0%201bb3135fac1780f5a917dc7cb8e68de5/image.png)
+![image.png](ddc5/image.png)
 
 # DecoderLayer的基本结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(5)%20-%20DecoderLayer%E7%9A%84%E5%AE%9E%E7%8E%B0%201bb3135fac1780f5a917dc7cb8e68de5/image%201.png)
+
+<img src="ddc5/image%201.png" style="width:40%;">
 
 如上图所示，DecoderLayer的基本结构是包含有：
 
@@ -98,7 +99,7 @@ class DeformableDetrDecoderLayer(nn.Layer):
 
 # Self-Attention：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(5)%20-%20DecoderLayer%E7%9A%84%E5%AE%9E%E7%8E%B0%201bb3135fac1780f5a917dc7cb8e68de5/image%202.png)
+![image.png](ddc5/image%202.png)
 
 Decoder中的Self-Attention使用的是标准多头自注意力计算，具体实现如下：
 
@@ -186,7 +187,7 @@ class MultiheadAttention(nn.Layer):
 
 # Cross-Attention：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(5)%20-%20DecoderLayer%E7%9A%84%E5%AE%9E%E7%8E%B0%201bb3135fac1780f5a917dc7cb8e68de5/image%203.png)
+![image.png](ddc5/image%203.png)
 
 Cross Attention的部分是使用DeformableAttention，这里将采样点位置生成，attention权重生成等操作，与特征采样等操作分离开来，前一部分通过nn.Layer的类来定义，后一部分使用一个函数来处理：
 
@@ -263,7 +264,7 @@ class MultiscaleDeformableAttention(nn.Layer):
 
 ## 特征采样和注意力计算：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(5)%20-%20DecoderLayer%E7%9A%84%E5%AE%9E%E7%8E%B0%201bb3135fac1780f5a917dc7cb8e68de5/image%204.png)
+![image.png](ddc5/image%204.png)
 
 ```python
 def multiscale_deformable_attention(x_v, spatial_shapes, sampling_locations, attn):
