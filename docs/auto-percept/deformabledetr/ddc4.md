@@ -2,7 +2,7 @@
 
 **Decoder的完整结构图如下：**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(4)%20-%20Decoder%E5%92%8CDecoder%E7%9A%84%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac1780c1945dd6297569fe14/image.png)
+![image.png](ddc1/image.png)
 
 **Decoder本身是由N个DecoderLayer组成，每个DecoderLayer具有相同的结构**
 
