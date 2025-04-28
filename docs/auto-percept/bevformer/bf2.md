@@ -18,14 +18,14 @@ BEVFormer 采用了ResNet101 + FPN的结构来提取图片的特征。
 
 图像Backbone部分是ResNet系列，BEVFormer base版本（还有small和tiny版本）使用的是ResNet101结构。模型的输出相较于标准ResNet去掉了logits层和一个pooling层，直接输出layer1到layer4各层的特征图。然后送入到Neck（FPN）中。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(2)%20-%20%E5%A4%9A%E6%91%84%E5%83%8F%E5%A4%B4%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%201c13135fac1780e189dac8eee6ec9c92/image.png)
+![image.png](bf2/image.png)
 
 上图可以看到，和标准的ResNet不同的地方主要有两点：
 
 1. Style：这部分主要是在BottleNeck中第一个卷积和第二个卷积的stride位置不同。为了和源代码对齐，所以使用了“caffe style”
 2. DCN：主要是将最后两个layer，layer3和layer4中的所有卷积，替换为了可变形卷积。 
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(2)%20-%20%E5%A4%9A%E6%91%84%E5%83%8F%E5%A4%B4%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%201c13135fac1780e189dac8eee6ec9c92/image%201.png)
+![image.png](bf2/image%201.png)
 
 ## 3. FPN
 
