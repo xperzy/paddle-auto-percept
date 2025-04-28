@@ -4,7 +4,7 @@
 
 如上图所示
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(2)%20-%20Decoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201bd3135fac178009a03be324d477cbba/image.png)
+![image.png](detr3dc2/image.png)
 
 如上图所示，Decoder的输入为：
 
@@ -14,7 +14,8 @@
 
 ### Decoder的结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(2)%20-%20Decoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201bd3135fac178009a03be324d477cbba/image%201.png)
+
+<img src="detr3dc2/image%201.png" style="width:50%;">
 
 DETR3D的decoder部分包含多个DecoderLayer，每个DecoderLayer主要包括3部分：
 
