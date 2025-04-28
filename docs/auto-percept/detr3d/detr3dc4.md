@@ -1,6 +1,6 @@
 # 从零开始实现 DETR3D (4) - 预测头: DetHead
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(4)%20-%20%E9%A2%84%E6%B5%8B%E5%A4%B4%20DetHead%201bd3135fac178061b3dad87c3a0ba6ad/image.png)
+![image.png](detr3dc4/image.png)
 
 **Decoder在经过多层计算后，主要的输出为：**
 
