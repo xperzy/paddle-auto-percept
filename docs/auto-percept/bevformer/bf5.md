@@ -2,7 +2,7 @@
 
 BEVFormer的Encoder部分，最主要的目标是学习BEV特征，而BEV特征则是作为注意力计算中的Query，通过两种不同的注意力机制，分别获得时序信息，和图像信息，那就是Temporal Self Attention(TSA)和 Spatial Cross Attention(SCA)。本节我们先来介绍TSA。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image.png)
+![image.png](bf5/image.png)
 
 TSA的目标是学习到前序帧的信息，也就是通过前序帧的BEV特征（bev_embeds）与当前帧结合，按照注意力机制的方式更新。具体来说：
 
@@ -76,27 +76,27 @@ TSA的目标是学习到前序帧的信息，也就是通过前序帧的BEV特�
 
 **y轴：水平向下**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%201.png)
+![image.png](bf5/image%201.png)
 
 假设某时刻t和时刻t+1，主车从a位置移动到了b位置：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%202.png)
+![image.png](bf5/image%202.png)
 
 首先我们可以得到向量`(delta_x, delta_y)`:
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%203.png)
+![image.png](bf5/image%203.png)
 
 主车在t+1时刻的ego_angle是该车在**世界坐标系**下的航向角：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%204.png)
+![image.png](bf5/image%204.png)
 
 我们需要的是“原本在t时刻，自车坐标系下的点，到t+1时刻自车坐标系下的位置”，也可以说是，我们需要找到t时刻的自车坐标系，如何转换到t+1时刻的自车坐标系：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%205.png)
+![image.png](bf5/image%205.png)
 
 也就是，求出shift_x, shift_y的值：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%206.png)
+![image.png](bf5/image%206.png)
 
 图上图，已知：
 
@@ -121,7 +121,7 @@ TSA的目标是学习到前序帧的信息，也就是通过前序帧的BEV特�
 
 经过当前帧和历史帧的组合，TSA接下来就是进行可变形的注意力计算。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%207.png)
+![image.png](bf5/image%207.png)
 
 **输入：**
 
@@ -129,11 +129,11 @@ TSA的目标是学习到前序帧的信息，也就是通过前序帧的BEV特�
 - value：经过组合的bev_embeds。
 - ref_pts：经过组合并且添加了偏移的参考点
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%208.png)
+![image.png](bf5/image%208.png)
 
 **计算2D deformable attn：**
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(5)%20-%20Encoder%20-%20Temporal%20Self%20Atte%201c13135fac178079aee9e036785d0a64/image%209.png)
+![image.png](bf5/image%209.png)
 
 主要分为以下这么几个步骤：
 
