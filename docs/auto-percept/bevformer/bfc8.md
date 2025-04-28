@@ -1,12 +1,12 @@
 # 从零开始实现BEVFormer (8) - Decoder Self-Attention
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0BEVFormer%20(7)%20-%20Decoder%E7%B1%BB%201c13135fac1780cb9569ffc14325a78f/image%201.png)
+![image.png](bfc7/image%201.png)
 
 ## DecodeLayer中的Self-Attention结构：
 
 Self-Attention的主要结构比较清楚：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0BEVFormer%20(8)%20-%20Decoder%20Self-Attention%201c13135fac178074975ce5b3e03b7f83/image.png)
+![image.png](bfc8/image.png)
 
 1. 线性变换q_proj：
     1. 输入：x + pos_embeds
