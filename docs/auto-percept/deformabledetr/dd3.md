@@ -1,34 +1,34 @@
 # 从零开始学 Deformable DETR (3) - 多尺度特征融合：Deformable Attention
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(3)%20-%20%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%89%B9%E5%BE%81%E8%9E%8D%E5%90%88%EF%BC%9ADeformable%20Att%201ba3135fac17805bb4c8f49f492772c7/image.png)
+![image.png](dd3/image.png)
 
 # 标准Self-Attention的原理：
 
 给定一个特征图，假设其维度是 [1, embed_dim, h, w]，标准的Self-Attention，会将h*w个token（每个token维度是embed_dim）两两计算注意力权重（通过点积的方式），其所有的token都会参与计算：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(3)%20-%20%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%89%B9%E5%BE%81%E8%9E%8D%E5%90%88%EF%BC%9ADeformable%20Att%201ba3135fac17805bb4c8f49f492772c7/image%201.png)
+![image.png](dd3/image%201.png)
 
 如上图所示，Self Attention在计算时，query 和 key 来自相同的feature map（经过不同的线性变换得到）。对于图像来说，2D的Feature map会先被展开成`[bs, seq_l, embed_dim]`，其中`seq_l = h * w`，这一步之后，每个元素就是原2D feature map上的一个特征向量，也可以被称为token，原本的2D feature map就变成了token序列。在得到Attention分数（经过softmax）后，再和Value（同样是来自相同的feature map，经过不同的线性变换得到）相乘，得到输出。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(3)%20-%20%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%89%B9%E5%BE%81%E8%9E%8D%E5%90%88%EF%BC%9ADeformable%20Att%201ba3135fac17805bb4c8f49f492772c7/image%202.png)
+![image.png](dd3/image%202.png)
 
 # Deformable Attention的原理：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(3)%20-%20%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%89%B9%E5%BE%81%E8%9E%8D%E5%90%88%EF%BC%9ADeformable%20Att%201ba3135fac17805bb4c8f49f492772c7/image%203.png)
+![image.png](dd3/image%203.png)
 
 Deformable Attention为了节省计算，去掉了点积计算注意力权重，而在每一个token的附近进行位置采样，作为注意力需要关注的位置，然后仅对这些位置做注意力计算，从而达到节省计算的目的。具体的计算过程如下：
 
 首先，对于图像任务来说，每一个token尽管在输入注意力计算的时候已经被展开（flatten）成一个token的序列，但其在2D空间中都有是有具体位置（（也就是坐标，对于数组来说也可以是下标）。如下图所示，2D的feature map上的每个token（左图），都可以对应一个具体的坐标位置（右图）。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(3)%20-%20%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%89%B9%E5%BE%81%E8%9E%8D%E5%90%88%EF%BC%9ADeformable%20Att%201ba3135fac17805bb4c8f49f492772c7/image%204.png)
+![image.png](dd3/image%204.png)
 
 对于每一个token，我们可以以该token的位置为中心，向上下左右各个方向采样N个位置。在这些位置上的token，会被用来参与计算Attention，feature map上的其他点，对于这个token来说不参与计算。如下图所示，对于每个位置（左图），先按照偏移量进行采样，然后可以计算得到实际的采样点位置（右图），这些采样点位置对应的特征（token）将会被用来计算attention。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(3)%20-%20%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%89%B9%E5%BE%81%E8%9E%8D%E5%90%88%EF%BC%9ADeformable%20Att%201ba3135fac17805bb4c8f49f492772c7/image%205.png)
+![image.png](dd3/image%205.png)
 
 可以看到，采样位置不一定正好落在某个Token的坐标位置上，如果特征采样的时候出现非整数（比如在某两个token之间的位置），那就使用双线性差值，得到该点的特征。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20Deformable%20DETR%20(3)%20-%20%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%89%B9%E5%BE%81%E8%9E%8D%E5%90%88%EF%BC%9ADeformable%20Att%201ba3135fac17805bb4c8f49f492772c7/image%206.png)
+![image.png](dd3/image%206.png)
 
 - 双线性差值：原理是根据在采样点上下左右四个像素点，通过距离加权平均，得到目标点的像素值。
     
