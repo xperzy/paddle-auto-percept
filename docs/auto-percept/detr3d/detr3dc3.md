@@ -2,11 +2,11 @@
 
 上一节我们实现了DETR3D的Transformer整体结构（如下图），本节我们来重点实现其中的Attn部分，Self-Attention和Cross-Attention。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(2)%20-%20Decoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201bd3135fac178009a03be324d477cbba/image%201.png)
+<img src="detr3dc2/image%201.png" style="width:50%;">
 
 将上面的DecoderLayer各个部分进一步展开，可以得到如下的结构图：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(3)%20-%203D%20%E6%9F%A5%E8%AF%A2%E7%82%B9%E5%88%B0%E5%A4%9A%E8%A7%86%E8%A7%92%E5%9B%BE%E5%83%8F%E7%9A%84%E6%8A%95%E5%BD%B1%E5%92%8CCross-Attentio%201bd3135fac178086a255f4de1e11d66b/image.png)
+![image.png](detr3dc3/image.png)
 
 ## Self-Attention
 
@@ -29,7 +29,7 @@ Self-Attention部分采用的是标准的Attention结构，与DETR基本类似�
 
 结构图：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(3)%20-%203D%20%E6%9F%A5%E8%AF%A2%E7%82%B9%E5%88%B0%E5%A4%9A%E8%A7%86%E8%A7%92%E5%9B%BE%E5%83%8F%E7%9A%84%E6%8A%95%E5%BD%B1%E5%92%8CCross-Attentio%201bd3135fac178086a255f4de1e11d66b/image%201.png)
+![image.png](detr3dc3/image%201.png)
 
 代码实现：
 
@@ -110,11 +110,11 @@ class MultiheadAttention(nn.Layer):
 
 Cross-Attention的计算方式，是利用Deformable Attention，对特征进行采样，然后通过两个线性层，一个用来生成注意力权重（注意这个是可学习的），另一个用来对采样的特征进一步提取特征，最后再使用矩阵乘法按照注意力权重从特征中获得最终的输出特征，大致的流程如下图所示：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(3)%20-%203D%20%E6%9F%A5%E8%AF%A2%E7%82%B9%E5%88%B0%E5%A4%9A%E8%A7%86%E8%A7%92%E5%9B%BE%E5%83%8F%E7%9A%84%E6%8A%95%E5%BD%B1%E5%92%8CCross-Attentio%201bd3135fac178086a255f4de1e11d66b/image%202.png)
+![image.png](detr3dc3/image%202.png)
 
 详细结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(3)%20-%203D%20%E6%9F%A5%E8%AF%A2%E7%82%B9%E5%88%B0%E5%A4%9A%E8%A7%86%E8%A7%92%E5%9B%BE%E5%83%8F%E7%9A%84%E6%8A%95%E5%BD%B1%E5%92%8CCross-Attentio%201bd3135fac178086a255f4de1e11d66b/image%203.png)
+![image.png](detr3dc3/image%203.png)
 
 **代码实现：**
 
@@ -204,7 +204,7 @@ class Detr3DCrossAttention(nn.Layer):
 
 ### 3D 查询点到多视角图像的投影
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(3)%20-%203D%20%E6%9F%A5%E8%AF%A2%E7%82%B9%E5%88%B0%E5%A4%9A%E8%A7%86%E8%A7%92%E5%9B%BE%E5%83%8F%E7%9A%84%E6%8A%95%E5%BD%B1%E5%92%8CCross-Attentio%201bd3135fac178086a255f4de1e11d66b/image%204.png)
+![image.png](detr3dc3/image%204.png)
 
 ### DETR3D Reference Points
 
@@ -331,7 +331,7 @@ DETR3D中，情况稍微不太一样：
         - 对于[bs, num_cams, num_queries]的每一个[4, 4]都去乘以[4, 1]，得到`[bs, num_cams, num_queries, 4, 1]`
         - 最后再去掉-1维度，得到我们要的[x, y, z, 1](归一化前的坐标)；`[bs, n_cam, n_query, 4, 1] -> [bs, n_cam, n_query, 4]`
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(3)%20-%203D%20%E6%9F%A5%E8%AF%A2%E7%82%B9%E5%88%B0%E5%A4%9A%E8%A7%86%E8%A7%92%E5%9B%BE%E5%83%8F%E7%9A%84%E6%8A%95%E5%BD%B1%E5%92%8CCross-Attentio%201bd3135fac178086a255f4de1e11d66b/image%205.png)
+![image.png](detr3dc3/image%205.png)
 
 **具体实现的时候：**
 
