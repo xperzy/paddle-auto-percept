@@ -2,13 +2,13 @@
 
 我们首先来看一下DeformableDETR的整体结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(2)%20-%20Encoder%E5%92%8C%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac17802b81b9dca7e0fdc59b/image.png)
+![image.png](dd4/image.png)
 
 在上一节中，我们实现了ResNet的Image Backbone，本节我们来实现Encoder部分。
 
 ### Encoder和EncoderLayer结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(2)%20-%20Encoder%E5%92%8C%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac17802b81b9dca7e0fdc59b/image%201.png)
+![image.png](dd4/image%201.png)
 
 上图实际上展示了EncoderLayer的结构，在代码实现的时候，我们可以先实现`DeformableDetrEncoder`类，这个类实际上是包含了多个上图中的模块（多层EncoderLayer），并且还实现了注意力计算所需要的输入ReferencePoint的生成方法。
 
@@ -109,14 +109,14 @@ def get_reference_points(spatial_shapes, valid_ratios):
 - 在代码中循环处理每个level时：
     - `ref_y`和`ref_x` 首先通过linspace方法进行采样，这里的点是未做归一化的坐标点，范围是当前level的`(h,w)` 。例如，当前层的特征图的大小是 100 x 134，那么ref_y就是134列 [0.5，1.0， 1.5 … 99.5] 。
         
-        ![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(2)%20-%20Encoder%E5%92%8C%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac17802b81b9dca7e0fdc59b/image%202.png)
+        ![image.png](ddc2/image%202.png)
         
     - 注意：这里的`(h,w)`是当前层（level）的特征图的尺寸。这个尺寸其实是pad之后的尺寸，其中有一部分是原图经过padding的非有效图像区域。我们在推理的时候，参考点的位置加上模型计算得到的偏移量，就是我们要的bbox的位置，这些都是根据原图实际大小来计算的，不考虑padding，所以要求这些参考点也是对于原图的。参考点的范围应该是相对于原图大小的相对坐标。
     - 也就是说，我们希望这些参考点是相对于`(valid_h，valid_w)`的相对坐标，而现在的坐标是在`(h,w)`上的绝对坐标，我们可以先将这些坐标除以h(或者w)，就得到了相对坐标位置。
     - 然后再除以`valid_ratio`，这样会将参考点（**相对于(h,w)的0到1的范围），转换为相对于(valid_h, valid_w)的范围，坐标值可能会大于1**。也就是说，原本采样的这些点，相对于有效区域，在哪些位置，如果在有效区域外，那这个坐标可能会大于1.0
     - 这样，我们就得到了多层特征图上的所有特征点的参考位置。
         
-        ![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(2)%20-%20Encoder%E5%92%8C%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac17802b81b9dca7e0fdc59b/image%203.png)
+        ![image.png](ddc2/image%203.png)
         
     - 代码循环外：
         - reference_points 经过concat，shape=`[bs, (h1*w1+h2*w2+h3*w3+h4*w4)，2]`，
@@ -232,13 +232,13 @@ class DeformableDetrEncoder(nn.Layer):
 
 所以，采用和输入Batch大小相同的Tensor来保存mask信息，mask中的0和1的位置对于每张图来说是不同的，但是mask这个Tensor的尺寸，对于图像来说都是一样的，都是hxw。
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(2)%20-%20Encoder%E5%92%8C%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac17802b81b9dca7e0fdc59b/image%204.png)
+![image.png](ddc2/image%204.png)
 
 不仅输入的图像Batch有mask，经过Image Backbone的图像特征也有mask，这个mask是直接通过将输入mask按照feature map的大小进行下采样得到的。
 
 ## Valid ratio
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(2)%20-%20Encoder%E5%92%8C%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac17802b81b9dca7e0fdc59b/image%205.png)
+![image.png](ddc2/image%205.png)
 
 对于一个feature map，其中有效的部分的长宽与feature map的长宽的比值，就是valid_ratio。不难发现，对于一个batch的图像，单层feature map的valid ratio是不同的，因为每张图像的大小不同，pad的区域大小不同。对于一张图像的多层feature map（例如ResNet不同层得到的多层特征），valid_ratio也是不同的，这是因为feature map的mask是由输入图像的mask进行下采样得到的，因为每层的feature map大小不同，每次下采样不能保证pad区域都能够被整除，所以计算下来的valid_ratio也会不同。
 
