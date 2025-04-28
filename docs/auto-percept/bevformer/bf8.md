@@ -2,13 +2,13 @@
 
 ## BEVFormer的Decoder交叉注意力结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(8)%20-%20Decoder%20-%20Deformable%20Attenti%201c13135fac1780689ea6d015a8dd1cd4/image.png)
+![image.png](bf8/image.png)
 
 DecoderLayer的交叉注意力是计算object query和bev embed之间的注意力关系。具体来说，对于每一个object query，会有一个对应的可学习的3D参考点。根据参考点的位置，在其附近再进行一次偏移量采样，可以得到多个采样点位置。 有了这些采样点位置，就可以在BEV特征图上进行特征采样，然后再通过Deformable attention的计算方式计算交叉注意力，最终得到该模块的输出。
 
 ### Cross Attention的结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(8)%20-%20Decoder%20-%20Deformable%20Attenti%201c13135fac1780689ea6d015a8dd1cd4/image%201.png)
+![image.png](bf8/image%201.png)
 
 - **输入：**
     - object queries：这里是经过self-attention计算之后的object query，也可以叫做object embedding
@@ -27,6 +27,6 @@ DecoderLayer的交叉注意力是计算object query和bev embed之间的注意�
 
 ### Deformable Attention的注意力计算过程：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(8)%20-%20Decoder%20-%20Deformable%20Attenti%201c13135fac1780689ea6d015a8dd1cd4/image%202.png)
+![image.png](bf8/image%202.png)
 
 这一步的计算原理并不复杂，主要是在实现的时候有很多维度上的变换（在实践章节会详细讲解）。核心其实是使用grid_sample方法，在给定的特征图（这里是value）上，根据采样点位置进行特征采样。采样得到的特征，与attn_weights相乘（类似于标准attention的softmax(q*k’) * v，只是这里的v变成了采样部分特征点，并且不使用k，而是使用可学习的attn_weights直接与采样特征相乘，attn_weights是通过q经过linear层计算得到的。
