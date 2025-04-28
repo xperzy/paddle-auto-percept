@@ -9,7 +9,7 @@
 
 如下图所示：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(1)%20-%20%E7%8E%AF%E8%A7%86%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E3%80%81%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%E5%92%8C%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%201bd3135fac17807e9638c9fbc27115a9/image.png)
+![image.png](detr3dc1/image.png)
 
 本节我们首先来看数据加载和特征提取。
 
@@ -25,7 +25,7 @@ DETR3D使用了Nuscenes数据集的环视图像部分，基于单帧进行3D目�
 
 **输入**：Nuscenes数据集的路径（root_path），其文件结构基本如下（这里只使用v1.0-mini数据集）
 
-![image.png](../%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20-%20%E6%99%BA%E9%A9%BE%E5%9F%BA%E7%A1%80%EF%BC%9ANuScenes%20%E6%95%B0%E6%8D%AE%E9%9B%86%201bd3135fac1780e6a232c1a227160f03/image%201.png)
+<img src="../nuscenes/image%201.png" style="width:30%;">
 
 **操作过程**：
 
@@ -621,7 +621,7 @@ dataloader = paddle.io.DataLoader(dataset, batch_size=1)
 
 ### ResNet：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(1)%20-%20%E7%8E%AF%E8%A7%86%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E3%80%81%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%E5%92%8C%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%201bd3135fac17807e9638c9fbc27115a9/image%201.png)
+![image.png](detr3dc1/image%201.png)
 
 **1. ResNet50的整体结构：ResNet类**
 
@@ -781,7 +781,7 @@ class Resnet50Feature(nn.LayerDict)：
 
 ### DCNPack
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(1)%20-%20%E7%8E%AF%E8%A7%86%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E3%80%81%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%E5%92%8C%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%201bd3135fac17807e9638c9fbc27115a9/image%202.png)
+![image.png](detr3dc1/image%202.png)
 
 在DETR3D的backbone实现中，使用了DCNv2算子，这个算子使用可变形卷积操作，用来替换网络中的一部分Conv3x3操作，用来提升模型的表达能力（简单说就是使用这个操作效果会更好）。DCNv2的原理超出本文范围，一句话概括就是类似可变形注意力机制的概念，不使用固定的卷积window，而是动态的采样一些offset，并根据采样位置计算feature map。在实现的时候，需要注意源码中使用的DCNv2操作，Paddle 自带的paddle.vision.ops.deform_conv2d操作并不是对应的DCNv2，所以需要进一步自定义这个类，并增加offset的计算（通过一个卷积），具体实现如下。
 
@@ -862,7 +862,7 @@ DETR3D使用了FPN进一步提取并生成多层图像特征，具体来说FPN�
     1. Backbone特征层： 从backbone的每层特征经过lateral_conv，然后与下一层经过lateral_conv的特征相加，再经过fpn_conv层得到输出特征
     2. Extra特征层：只从最后一个backbone特征层，经过（可选relu）extra_fpn_conv(stride=2的Conv2D)，直接得到输出特征
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20DETR3D%20(1)%20-%20%E7%8E%AF%E8%A7%86%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E3%80%81%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2%E5%92%8C%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%201bd3135fac17807e9638c9fbc27115a9/image%203.png)
+![image.png](detr3dc1/image%203.png)
 
 完整代码：
 
