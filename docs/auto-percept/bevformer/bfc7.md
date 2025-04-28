@@ -1,6 +1,6 @@
 # 从零开始实现BEVFormer (7) - Decoder类
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0BEVFormer%20(7)%20-%20Decoder%E7%B1%BB%201c13135fac1780cb9569ffc14325a78f/image.png)
+![image.png](bfc7/image.png)
 
 ## Decoder的整体结构
 
@@ -100,7 +100,7 @@ class BEVFormerDecoder(nn.Layer):
 
 ## DecoderLayer的整体结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0BEVFormer%20(7)%20-%20Decoder%E7%B1%BB%201c13135fac1780cb9569ffc14325a78f/image%201.png)
+![image.png](bfc7/image%201.png)
 
 可以看到，Decoder的各层是比较标准的Transformer Decoder结构：
 
