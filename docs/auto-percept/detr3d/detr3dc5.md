@@ -31,19 +31,19 @@ DETR3D源码是以mmdetction3d库为基础进行开发和运行的。其形式�
 git clone https://github.com/WangYueFt/detr3d.git
 ```
 
-![Screenshot from 2024-11-22 09-40-39.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/Screenshot_from_2024-11-22_09-40-39.png)
+![Screenshot from 2024-11-22 09-40-39.png](detr3dc5/Screenshot_from_2024-11-22_09-40-39.png)
 
 ## 2. 下载权重
 
 从官方Github的文档中可以查找到模型权重的下载地址（googledrive）：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image.png)
+![image.png](detr3dc5/image.png)
 
 下载地址： https://drive.google.com/file/d/1YWX-jIS6fxG5_JKUBNVcZtsPtShdjE4O/view?usp=sharing
 
 下载完成后，将权重文件放在项目文件目录下，例如，`detr3d/ckpt/detr3d_resnet01.pth`
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%201.png)
+![image.png](detr3dc5/image%201.png)
 
 ## 3. 下载数据
 
@@ -53,17 +53,17 @@ https://www.nuscenes.org/download
 
 代码学习和开发阶段，我们可以只下载mini版本：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%202.png)
+![image.png](detr3dc5/image%202.png)
 
 下载完成后，同样将数据解压放在项目文件夹下，例如： `detr3d/data/` ，文件结构应该是类似下面截屏的内容：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%203.png)
+![image.png](detr3dc5/image%203.png)
 
 ## 4. 准备环境
 
 官方提供的模型权重Log中，提供了非常详细的运行环境，我们可以打开进行查阅和参考。实际开发过程中，由于源码的开发时间相对比较早，一些环境和版本对于新一些的硬件以及大家常用的版本已经有些出入，经过作者验证，有一些库是可以使用更新的版本，但由于大家的软硬件环境各不相同，这里不推荐具体的软件版本，大家可以参考下面的配置流程。
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%204.png)
+![image.png](detr3dc5/image%204.png)
 
 几个主要的版本（比较熟悉的可以直接对照和安装相关包）：
 
@@ -172,7 +172,7 @@ pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 -f https://download.pyt
 
 验证版本和正确性：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%205.png)
+![image.png](detr3dc5/image%205.png)
 
 ### 3. 安装mmcv，mmdet，mmdet3d库
 
@@ -240,11 +240,11 @@ STEP2：在命令行输入 `touch ./tools/__init__.py` ，创建一个空的init
 
 再次运行，如果成功会出现数据集转换的进度条：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%206.png)
+![image.png](detr3dc5/image%206.png)
 
 数据转换完成后，在`data/nuscenes`路径下会生成几个新的pkl文件，就是我们在代码中加载的数据文件：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%207.png)
+![image.png](detr3dc5/image%207.png)
 
 **运行源码：**
 
@@ -256,16 +256,16 @@ tools/dist_test.sh projects/configs/detr3d/detr3d_res101_gridmask.py ./ckpts/det
 
 当命令正确运行，我们可以看到如下的进度条显示：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%208.png)
+![image.png](detr3dc5/image%208.png)
 
 此时的GPU被拉满，显存占用可以看到大约需要4.3G左右：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%209.png)
+![image.png](detr3dc5/image%209.png)
 
 ## 6. 查看结果
 
 上面的命令运行完成（RTX4080移动版大约1min不到）后会有evaluation的结果显示：
 
-![image.png](%E9%99%84%E5%BD%95%20-%20%E5%A6%82%E4%BD%95%E8%B7%91%E9%80%9ADETR3D%20Pytorch%E6%BA%90%E7%A0%81%201bd3135fac17804a9a4ef770eb0adff6/image%2010.png)
+![image.png](detr3dc5/image%2010.png)
 
 看到这些就表示运行成功了
