@@ -2,13 +2,13 @@
 
 我们再来看一下DeformableDETR的整体结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(2)%20-%20Encoder%E5%92%8C%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac17802b81b9dca7e0fdc59b/image.png)
+![image.png](ddc2/image.png)
 
 在上一节中，我们实现了Encoder的基本框架和参考点的计算，本节我们来看EncoderLayer的具体实现。
 
 ### EncoderLayer结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(2)%20-%20Encoder%E5%92%8C%E5%8F%82%E8%80%83%E7%82%B9%E8%AE%A1%E7%AE%97%201bb3135fac17802b81b9dca7e0fdc59b/image%201.png)
+<img src="ddc2/image%201.png" style="width:50%;">
 
 从上图中可以看到，EncoderLayer的结构，是在标准的Transformer Encoder结构基础上，修改了MultiHeadAttentioni模块，将其替换成了Deformable MultiHead Self-Attention，其他部分基本上保持不变。
 
@@ -89,7 +89,7 @@ class DeformableDetrEncoderLayer(nn.Layer):
 
 ### Deformable Attention的结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(3)%20-%20Encoder%E5%92%8CDeformable%20At%201bb3135fac17804da49bf2fce81f6857/image.png)
+![image.png](ddc3/image.png)
 
 我们首先来看Deformable Attention的实现：
 
@@ -154,18 +154,18 @@ Forward部分可以分为以下几个步骤：
     2. sampling locations 是参考点加上offsets，要注意这里计算的时候，需要归一化offsets。
 3. 计算attn权重：这里也是通过一个线性层计算得到权重，在下一步里进行注意力的计算。
     
-    ![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(3)%20-%20Encoder%E5%92%8CDeformable%20At%201bb3135fac17804da49bf2fce81f6857/image%201.png)
+    ![image.png](ddc3/image%201.png)
     
 4. 特征采样和注意力计算：
     1. 这一步是可变形注意力的核心部分，原理是通过特征采样，按我们预设的数量在参考位置（reference locations）附近进行特征采样，然后使用这些特征作为参与注意力计算的特征，最终与attn权重相乘得到输出。
     2. 需要注意的是multi scale的计算，是说，我们的每个特征点，在采样的时候，会在其各个level（就是多scale）上都去采样n个点，最后会在level和point的维度上都进行求和相加。
 5. 输出投影
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(3)%20-%20Encoder%E5%92%8CDeformable%20At%201bb3135fac17804da49bf2fce81f6857/image%202.png)
+![image.png](ddc3/image%202.png)
 
 ### 特征采样和注意力计算：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(3)%20-%20Encoder%E5%92%8CDeformable%20At%201bb3135fac17804da49bf2fce81f6857/image%203.png)
+![image.png](ddc3/image%203.png)
 
 - `F.grid_sample`: 要求输入的网格点在(-1,1)范围内，所以 当 x=-1, y=-1时，指的是特征图的左上角，当x=1,y=1的时候，指的是特征图的右下角。如果超出这个范围，会将特征填0（当设置**padding_mode="zeros"时**）
 - 循环是分层计算特征采样
@@ -243,7 +243,7 @@ def multiscale_deformable_attention(x_v, spatial_shapes, sampling_locations, att
 
 ### FFN结构：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%20Deformable%20DETR%20(3)%20-%20Encoder%E5%92%8CDeformable%20At%201bb3135fac17804da49bf2fce81f6857/image%204.png)
+![image.png](ddc3/image%204.png)
 
 ```python
         # Class定义：
