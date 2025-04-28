@@ -1,6 +1,6 @@
 # 从零开始学 BEVFormer (3) - Encoder的整体结构
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(3)%20-%20Encoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac17808a887adb4734664e80/image.png)
+![image.png](bf3/image.png)
 
 上图展示了BEVFormer Head部分（Backbone之后的部分）的结构图，可以看到其主要包括：
 
@@ -8,7 +8,7 @@
 - Class Embeds： 分类头
 - Bbox Embeds：框回归头
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(3)%20-%20Encoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac17808a887adb4734664e80/image%201.png)
+![image.png](bf3/image%201.png)
 
 Transformer部分，是BEVFormer的核心部分，包括：
 
@@ -17,7 +17,7 @@ Transformer部分，是BEVFormer的核心部分，包括：
 
 本节我们先来看Encoder的部分：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(3)%20-%20Encoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac17808a887adb4734664e80/image%202.png)
+![image.png](bf3/image%202.png)
 
 ## Encoder的输入：
 
@@ -29,7 +29,7 @@ Encoder的输入可以分为下面3个部分：
 
 ### BEV Query：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(3)%20-%20Encoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac17808a887adb4734664e80/image%203.png)
+![image.png](bf3/image%203.png)
 
 **BEV Query** 是 BEVFormer 的 Transformer 架构中的输入查询（query），**用来生成 BEV 特征**。它通常是固定初始化的可学习参数，表示在鸟瞰图（Bird's Eye View, BEV）中离散化采样的各个位置。BEV Query 的数量对应 BEV 网格划分的数量，每个 Query 代表 BEV 空间中的一个点（一个格子）。需要注意的是，**BEV Query本身并不包含特征**，只是网络用来学习 BEV 空间中各点的特征表示的起点。
 
@@ -38,13 +38,13 @@ Encoder的输入可以分为下面3个部分：
 
 ### Prev BEV Embeds：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(3)%20-%20Encoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac17808a887adb4734664e80/image%204.png)
+![image.png](bf3/image%204.png)
 
 就是前帧的BEV特征，经过encoder的输出被保存下来用于融合时序信息。简单来说，**BEV 特征** 是 BEV Query 经过 Encoder 处理后的输出结果，是**融合了多视角特征并映射到 BEV 空间后的特征表示。**
 
 ### Image Features：
 
-![image.png](%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AD%A6%20BEVFormer%20(3)%20-%20Encoder%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%201c13135fac17808a887adb4734664e80/image%205.png)
+![image.png](bf3/image%205.png)
 
 图像特征部分，除了前文介绍的多尺度多视角图像特征外（经过了FPN的输出），BEVFormer还融合了相机和尺度维度的embedding，这两个embedding可以理解是两组可学习的权重，用来提升Transformer的表示能力。
 
